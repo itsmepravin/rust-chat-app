@@ -46,6 +46,16 @@ fn main() {
                 sleep();
             });
         }
-        if let Ok(msg) = rx.try_recv() {}
+        if let Ok(msg) = rx.try_recv() {
+            clients = clients
+                .into_iter()
+                .filter_map(|mut client| {
+                    let mut buff = msg.clone().into_bytes();
+                    buff.resize(MSG_SIZE, 0);
+
+                    client.write_all(&buff).map(|_| client).ok()
+                })
+                .collect::<Vec<_>>();
+        }
     }
 }

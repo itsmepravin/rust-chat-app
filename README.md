@@ -1,1 +1,1 @@
-# my-chat
+Simple chat app made from Rust.
